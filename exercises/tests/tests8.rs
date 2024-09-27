@@ -20,6 +20,7 @@ mod tests {
         #[cfg(feature = "pass")]
         return;
 
+        
         panic!("no cfg set");
     }
 }
