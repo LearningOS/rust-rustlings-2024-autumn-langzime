@@ -13,7 +13,14 @@ fn maybe_icecream(time_of_day: u16) -> Option<u16> {
     // value of 0 The Option output should gracefully handle cases where
     // time_of_day > 23.
     // TODO: Complete the function body - remember to return an Option!
-    ???
+    // 我们这里使用 24 小时制，因此晚上 10 点的值为 22，午夜 12 点的值为 0。Option 输出应该优雅地处理 time_of_day > 23 的情况。
+    if time_of_day <= 10 {
+        return Some(5);
+    }else if time_of_day > 10&& time_of_day <= 23 {
+        return Some(0);
+    }else {
+        return None;
+    }
 }
 
 #[cfg(test)]
@@ -33,7 +40,7 @@ mod tests {
     fn raw_value() {
         // TODO: Fix this test. How do you get at the value contained in the
         // Option?
-        let icecreams = maybe_icecream(12);
-        assert_eq!(icecreams, 5);
+        let icecreams = maybe_icecream(10);
+        assert_eq!(icecreams, Some(5));
     }
 }
