@@ -11,6 +11,8 @@
 // I AM NOT DONE
 
 pub trait Licensed {
+}
+pub trait Licensed1 {
     fn licensing_info(&self) -> String;
 }
 
@@ -23,14 +25,28 @@ struct OtherSoftware {
 }
 
 impl Licensed for SomeSoftware {} // Don't edit this line
+
+impl Licensed1 for SomeSoftware {
+
+    fn licensing_info(&self) -> String {
+        String::from("Some information")
+    }
+}
 impl Licensed for OtherSoftware {} // Don't edit this line
 
+impl Licensed1 for OtherSoftware {
+
+    fn licensing_info(&self) -> String {
+        String::from("Some information")
+    }
+}
 #[cfg(test)]
 mod tests {
     use super::*;
 
     #[test]
     fn is_licensing_info_the_same() {
+
         let licensing_info = String::from("Some information");
         let some_software = SomeSoftware { version_number: 1 };
         let other_software = OtherSoftware {
