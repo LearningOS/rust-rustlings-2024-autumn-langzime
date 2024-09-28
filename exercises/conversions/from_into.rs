@@ -44,6 +44,20 @@ impl Default for Person {
 
 impl From<&str> for Person {
     fn from(s: &str) -> Person {
+        let arr = s.split(",").collect::<Vec<_>>();
+        if arr.len() != 2 {
+            return Person::default();
+        }
+        if arr[1].parse::<usize>().is_err() {
+            return Person::default();
+        }
+        if arr[0].trim().is_empty() {
+            return Person::default();
+        }
+        Person{
+            name: arr[0].to_string(),
+            age: arr[1].parse::<usize>().unwrap_or(30),
+        }
     }
 }
 
@@ -85,6 +99,7 @@ mod tests {
         // Test that "Mark,twenty" will return the default person due to an
         // error in parsing age
         let p = Person::from("Mark,twenty");
+        println!("{p:?}");
         assert_eq!(p.name, "John");
         assert_eq!(p.age, 30);
     }
