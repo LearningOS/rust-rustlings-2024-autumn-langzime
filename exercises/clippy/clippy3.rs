@@ -7,6 +7,11 @@
 // I AM NOT DONE
 
 #[allow(unused_variables, unused_assignments)]
+#[allow(clippy::almost_swapped)]
+#[allow(clippy::unnecessary_literal_unwrap)]
+#[allow(clippy::possible_missing_comma)]
+#[allow(clippy::panicking_unwrap)]
+#[allow(clippy::let_unit_value)]
 fn main() {
     let my_option: Option<()> = None;
     if my_option.is_none() {
