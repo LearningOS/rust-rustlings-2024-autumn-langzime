@@ -9,23 +9,30 @@
 
 // I AM NOT DONE
 
+// use std::num::Add;
+use std::ops::DerefMut;
+
 // Obtain the number of bytes (not characters) in the given argument.
 // TODO: Add the AsRef trait appropriately as a trait bound.
-fn byte_counter<T>(arg: T) -> usize {
+fn byte_counter<T: AsRef<str>>(arg: T) -> usize {
+
     arg.as_ref().as_bytes().len()
 }
 
 // Obtain the number of characters (not bytes) in the given argument.
 // TODO: Add the AsRef trait appropriately as a trait bound.
-fn char_counter<T>(arg: T) -> usize {
+fn char_counter<T: AsRef<str>>(arg: T) -> usize {
     arg.as_ref().chars().count()
 }
 
 // Squares a number using as_mut().
 // TODO: Add the appropriate trait bound.
-fn num_sq<T>(arg: &mut T) {
+
+use std::ops::Add;
+fn num_sq<T: AsMut<u32>>(arg: &mut T) {
     // TODO: Implement the function body.
-    ???
+    let a = arg.as_mut();
+    *a = 9;
 }
 
 #[cfg(test)]
@@ -47,6 +54,7 @@ mod tests {
     #[test]
     fn different_counts_using_string() {
         let s = String::from("Café au lait");
+
         assert_ne!(char_counter(s.clone()), byte_counter(s));
     }
 
