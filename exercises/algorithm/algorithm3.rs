@@ -5,8 +5,22 @@
 */
 // I AM NOT DONE
 
-fn sort<T>(array: &mut [T]){
-	//TODO
+use std::fmt::{Debug, Display};
+
+fn sort<T: Ord + Display + Debug>(array: &mut [T]){
+    let len = array.len();
+    for i in 0..len {
+        let mut swapped = false;
+        for j in 0..(len - i - 1) {
+            if array[j] > array[j + 1]  {
+                array.swap(j, j + 1);
+                swapped = true;
+            }
+        }
+        if !swapped {
+            break;
+        }
+    }
 }
 #[cfg(test)]
 mod tests {
@@ -31,3 +45,5 @@ mod tests {
         assert_eq!(vec, vec![11, 22, 33, 44, 55, 66, 77, 88, 99]);
     }
 }
+
+fn main() {}
