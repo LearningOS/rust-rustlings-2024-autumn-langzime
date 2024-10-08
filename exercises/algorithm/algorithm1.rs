@@ -9,12 +9,12 @@ use std::ptr::NonNull;
 use std::vec::*;
 
 #[derive(Debug)]
-struct Node<T> {
+struct Node<T: Clone + Ord> {
     val: T,
     next: Option<NonNull<Node<T>>>,
 }
 
-impl<T> Node<T> {
+impl<T: Clone + Ord> Node<T> {
     fn new(t: T) -> Node<T> {
         Node {
             val: t,
@@ -23,19 +23,19 @@ impl<T> Node<T> {
     }
 }
 #[derive(Debug)]
-struct LinkedList<T> {
+struct LinkedList<T: Clone + Ord> {
     length: u32,
     start: Option<NonNull<Node<T>>>,
     end: Option<NonNull<Node<T>>>,
 }
 
-impl<T> Default for LinkedList<T> {
+impl<T: Clone + Ord> Default for LinkedList<T> {
     fn default() -> Self {
         Self::new()
     }
 }
 
-impl<T> LinkedList<T> {
+impl<T: Clone + Ord> LinkedList<T> {
     pub fn new() -> Self {
         Self {
             length: 0,
@@ -69,18 +69,41 @@ impl<T> LinkedList<T> {
             },
         }
     }
-	pub fn merge(list_a:LinkedList<T>,list_b:LinkedList<T>) -> Self
-	{
-		//TODO
-		Self {
-            length: 0,
-            start: None,
-            end: None,
+	pub fn merge(list_a: LinkedList<T>,list_b: LinkedList<T>) -> Self {
+		let mut res = LinkedList::new();
+        let mut la_cur = list_a.start;
+        let mut lb_cur = list_b.start;
+        unsafe {
+            loop {
+                match (la_cur, lb_cur) {
+                    (Some(a), Some(b)) => {
+                        if (*a.as_ptr()).val < (*b.as_ptr()).val {
+                            res.add((*a.as_ptr()).val.clone());
+                            la_cur = (*a.as_ptr()).next;
+                        }else{
+                            res.add((*b.as_ptr()).val.clone());
+                            lb_cur = (*b.as_ptr()).next;
+                        }
+                    }
+                    (Some(a), None) => {
+                        res.add((*a.as_ptr()).val.clone());
+                        la_cur = (*a.as_ptr()).next;
+                    }
+                    (None, Some(b)) => {
+                        res.add((*b.as_ptr()).val.clone());
+                        lb_cur = (*b.as_ptr()).next;
+                    }
+                    _ => {
+                        break;
+                    }
+                }
+            }
         }
+        res
 	}
 }
 
-impl<T> Display for LinkedList<T>
+impl<T: Clone + Ord> Display for LinkedList<T>
 where
     T: Display,
 {
@@ -92,7 +115,7 @@ where
     }
 }
 
-impl<T> Display for Node<T>
+impl<T: Clone + Ord> Display for Node<T>
 where
     T: Display,
 {
