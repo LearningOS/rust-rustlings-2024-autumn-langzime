@@ -9,13 +9,13 @@ use std::ptr::NonNull;
 use std::vec::*;
 
 #[derive(Debug)]
-struct Node<T> {
+struct Node<T: Clone + Ord> {
     val: T,
     next: Option<NonNull<Node<T>>>,
     prev: Option<NonNull<Node<T>>>,
 }
 
-impl<T> Node<T> {
+impl<T: Clone + Ord> Node<T> {
     fn new(t: T) -> Node<T> {
         Node {
             val: t,
@@ -25,19 +25,19 @@ impl<T> Node<T> {
     }
 }
 #[derive(Debug)]
-struct LinkedList<T> {
+struct LinkedList<T: Clone + Ord> {
     length: u32,
     start: Option<NonNull<Node<T>>>,
     end: Option<NonNull<Node<T>>>,
 }
 
-impl<T> Default for LinkedList<T> {
+impl<T: Clone + Ord> Default for LinkedList<T> {
     fn default() -> Self {
         Self::new()
     }
 }
 
-impl<T> LinkedList<T> {
+impl<T: Clone + Ord> LinkedList<T> {
     pub fn new() -> Self {
         Self {
             length: 0,
@@ -72,14 +72,49 @@ impl<T> LinkedList<T> {
             },
         }
     }
+
+    //双指针反转链表
 	pub fn reverse(&mut self){
-		// TODO
+        let mut cur = self.start;
+        let mut prev = None;
+        unsafe {
+            while let Some(cur_node) = cur {
+                //在循环中，先保存当前结点的下一个结点为next
+                let next =  (*cur_node.as_ptr()).next;
+                //将当前结点的指针域指向前一个结点 prev，实现指针反转
+                (*cur_node.as_ptr()).next = prev;
+                //更新 prev 指针为当前结点 cur
+                prev = cur;
+                //更新 cur 指针为下一个结点 next
+                cur = next;
+            }
+        }
+        self.start = prev;
 	}
+
+    ///头插法
+    pub fn reverse1(&mut self){
+        let mut cur = self.start;
+        let mut prev = None;
+        unsafe {
+            while let Some(cur_node) = cur {
+                //在循环中，先保存当前结点的下一个结点为next
+                let next =  (*cur_node.as_ptr()).next;
+                //将当前结点的指针域指向前一个结点 prev，实现指针反转
+                (*cur_node.as_ptr()).next = prev;
+                //更新 prev 指针为当前结点 cur
+                prev = cur;
+                //更新 cur 指针为下一个结点 next
+                cur = next;
+            }
+        }
+        self.start = prev;
+    }
 }
 
 impl<T> Display for LinkedList<T>
 where
-    T: Display,
+    T: Display + Clone + Ord,
 {
     fn fmt(&self, f: &mut Formatter) -> fmt::Result {
         match self.start {
@@ -91,7 +126,7 @@ where
 
 impl<T> Display for Node<T>
 where
-    T: Display,
+    T: Display + Clone + Ord,
 {
     fn fmt(&self, f: &mut Formatter) -> fmt::Result {
         match self.next {
@@ -157,3 +192,5 @@ mod tests {
 		}
 	}
 }
+
+fn main() {}
