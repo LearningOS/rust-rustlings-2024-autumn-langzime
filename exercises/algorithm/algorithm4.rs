@@ -50,13 +50,48 @@ where
 
     // Insert a value into the BST
     fn insert(&mut self, value: T) {
-        //TODO
+        match &mut self.root {
+            None => {
+                self.root = Some(Box::new(TreeNode::new(value)));
+            }
+            Some(root) => {
+                if value < root.value {
+                    if let Some(ref mut l) = root.left {
+                        l.insert(value);
+                    }else{
+                        root.left = Some(Box::new(TreeNode::new(value)));
+                    }
+                }else if value > root.value {
+                    if let Some(ref mut r) = root.right {
+                        r.insert(value);
+                    }else{
+                        root.right = Some(Box::new(TreeNode::new(value)));
+                    }
+                }else{
+                }
+            }
+        }
     }
 
     // Search for a value in the BST
     fn search(&self, value: T) -> bool {
-        //TODO
-        true
+        Self::search_tree_node(&self.root, value)
+    }
+    fn search_tree_node(node: &Option<Box<TreeNode<T>>>, search_key: T) -> bool {
+        match node {
+            None => {
+                false
+            }
+            Some(t) => {
+                if search_key < t.value   {
+                    Self::search_tree_node(&t.left, search_key)
+                }else if search_key > t.value {
+                    Self::search_tree_node(&t.right, search_key)
+                }else{
+                    true
+                }
+            }
+        }
     }
 }
 
@@ -66,7 +101,21 @@ where
 {
     // Insert a node into the tree
     fn insert(&mut self, value: T) {
-        //TODO
+        if value < self.value {
+            if let Some(ref mut l) = self.left {
+                l.insert(value);
+            }else{
+                self.left = Some(Box::new(TreeNode::new(value)));
+            }
+        }else if value > self.value {
+            if let Some(ref mut r) = self.right {
+                r.insert(value);
+            }else{
+                self.right = Some(Box::new(TreeNode::new(value)));
+            }
+        }else {
+
+        }
     }
 }
 
@@ -121,6 +170,6 @@ mod tests {
             None => panic!("Root should not be None after insertion"),
         }
     }
-}    
+}
 
-
+fn main() {}
