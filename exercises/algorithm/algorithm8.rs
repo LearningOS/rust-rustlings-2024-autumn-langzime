@@ -88,7 +88,7 @@ impl<T> MyStack<T> {
         {
             swap(&mut self.q1, &mut self.q2);
         }
-        self.q2.dequeue()?
+        self.q2.dequeue()
     }
     pub fn is_empty(&self) -> bool {
 		//TODO
