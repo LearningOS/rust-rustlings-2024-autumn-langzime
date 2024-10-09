@@ -4,9 +4,12 @@
 */
 
 //I AM NOT DONE
-use std::collections::VecDeque;
+use std::collections::{HashMap, VecDeque};
+
 
 // Define a graph
+//邻接表-图
+//邻接表 底层数据结构 由 数组 + 链表 组成
 struct Graph {
     adj: Vec<Vec<usize>>, 
 }
@@ -27,10 +30,22 @@ impl Graph {
 
     // Perform a breadth-first search on the graph, return the order of visited nodes
     fn bfs_with_return(&self, start: usize) -> Vec<usize> {
-        
-		//TODO
-
+        let mut visited = HashMap::new();
+        let mut queue = VecDeque::new();
         let mut visit_order = vec![];
+        visited.insert(start, true);
+        queue.push_back(start);
+        while let Some(current) = queue.pop_front() {
+            visit_order.push(current);
+            if let Some(neighbors) = self.adj.get(current) {
+                for &neighbor in neighbors {
+                    if !visited.contains_key(&neighbor) {
+                        visited.insert(neighbor, true);
+                        queue.push_back(neighbor);
+                    }
+                }
+            }
+        }
         visit_order
     }
 }
@@ -85,3 +100,4 @@ mod tests {
     }
 }
 
+fn main() {}
