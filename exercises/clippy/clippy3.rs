@@ -15,7 +15,7 @@
 fn main() {
     let my_option: Option<()> = None;
     if my_option.is_none() {
-        my_option.unwrap();
+        // my_option.unwrap();
     }
 
     let my_arr = &[
