@@ -25,6 +25,14 @@ tokio = { version = "1.21.2", features = ["full"] }
 name = "rustlings"
 path = "src/main.rs"
 
+[[bin]]
+name = "algorithm9"
+path = "exercises/algorithm/algorithm9.rs"
+
+[[bin]]
+name = "algorithm10"
+path = "exercises/algorithm/algorithm10.rs"
+
 [dev-dependencies]
 assert_cmd = "0.11.0"
 predicates = "1.0.1"

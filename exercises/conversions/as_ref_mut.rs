@@ -7,7 +7,7 @@
 // Execute `rustlings hint as_ref_mut` or use the `hint` watch subcommand for a
 // hint.
 
-// I AM NOT DONE
+//
 
 // use std::num::Add;
 use std::ops::DerefMut;

@@ -5,7 +5,7 @@
 // Execute `rustlings hint macros3` or use the `hint` watch subcommand for a
 // hint.
 
-// I AM NOT DONE
+//
 
 pub mod macros {
     // pub use my_macro;

@@ -152,3 +152,5 @@ mod tests {
         assert_eq!(heap.next(), Some(2));
     }
 }
+
+fn main() {}
