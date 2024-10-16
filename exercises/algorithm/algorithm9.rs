@@ -2,7 +2,6 @@
 	heap
 	This question requires you to implement a binary heap function
 */
-// I AM NOT DONE
 
 use std::cmp::Ord;
 use std::default::Default;
@@ -38,6 +37,18 @@ where
 
     pub fn add(&mut self, value: T) {
         //TODO
+        self.items.push(value);
+        self.count += 1;
+        let mut index = self.count;
+        while index > 1 {
+            let parent_idx = self.parent_idx(index);
+            if !(self.comparator)(&self.items[parent_idx], &self.items[index]) {
+                self.items.swap(parent_idx, index);
+                index = parent_idx;
+            } else {
+                break;
+            }
+        }
     }
 
     fn parent_idx(&self, idx: usize) -> usize {
@@ -58,7 +69,13 @@ where
 
     fn smallest_child_idx(&self, idx: usize) -> usize {
         //TODO
-		0
+        let left = self.left_child_idx(idx);
+        let right = self.right_child_idx(idx);
+        if right <= self.count && (self.comparator)(&self.items[right], &self.items[left]) {
+            right
+        } else {
+            left
+        }
     }
 }
 
@@ -85,7 +102,32 @@ where
 
     fn next(&mut self) -> Option<T> {
         //TODO
-		None
+        if self.count == 0 {
+            return None;
+        }
+        // 弹出堆顶元素，这是最小或最大元素
+        let result = self.items.remove(1);
+        self.count -= 1;
+        if self.count > 0 {
+            // 从数组末尾取出最后一个元素，并将其重新插入到堆的顶部
+            let last_item = self.items.pop().unwrap();
+            if !self.items.is_empty() {
+                self.items.insert(1, last_item);
+            }
+
+            // 重新调整堆（把放到1位置的元素，重新调整到堆中）
+            let mut idx = 1;
+            while self.children_present(idx) {// 判断是否有子节点
+                let swap_idx = self.smallest_child_idx(idx);// 找到较小/较大的子节点
+                if (self.comparator)(&self.items[swap_idx], &self.items[idx]) {
+                    self.items.swap(idx, swap_idx);
+                    idx = swap_idx;
+                } else {
+                    break;
+                }
+            }
+        }
+        Some(result)
     }
 }
 
@@ -135,6 +177,14 @@ mod tests {
         assert_eq!(heap.next(), Some(9));
         heap.add(1);
         assert_eq!(heap.next(), Some(1));
+    }
+
+    #[test]
+    fn test_min_heap1() {
+        let mut heap = MinHeap::new();
+        heap.add(4);
+        assert_eq!(heap.len(), 1);
+        assert_eq!(heap.next(), Some(4));
     }
 
     #[test]
